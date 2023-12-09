@@ -8,7 +8,7 @@ import Decryptor from './decryptor'
       const block = btn.closest('.hugo-encrypt') as HTMLElement
       decryptor.recover(block)
       btn.addEventListener('click', () => {
-        decryptor.decryptBlock(block)
+        decryptor.showBlock(block)
       })
     })
   })

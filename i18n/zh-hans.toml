@@ -1,11 +1,11 @@
 [decrypt]
-other = "解密"
+other = "解锁内容"
 
 [enter_password]
-other = "请输入密码"
+other = "请输入验证码"
 
 [incorrect_password]
-other = "密码不正确。"
+other = "验证码不正确。"
 
 [protected_by_password]
-other = "以下内容被密码保护。"
+other = "因初次访问，为防止爬虫和人机识别，请关注微信公众号，回复:‘验证码‘获取验证码来解锁全文"
