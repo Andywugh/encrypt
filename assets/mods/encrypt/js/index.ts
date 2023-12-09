@@ -6,7 +6,7 @@ import Decryptor from './decryptor'
     const buttons = document.querySelectorAll<HTMLButtonElement>('.hugo-decrypt-button')
     buttons.forEach(btn => {
       const block = btn.closest('.hugo-encrypt') as HTMLElement
-      decryptor.recover(block)
+      decryptor.recoverGlobal(block)
       btn.addEventListener('click', () => {
         decryptor.showBlock(block)
       })

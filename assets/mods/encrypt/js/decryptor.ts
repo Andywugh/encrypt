@@ -114,10 +114,14 @@ class Decryptor {
             .then((sum) => {
                 if (passwdsum.innerText == sum) {
                     block.classList.add('decrypted')
-                    this.rememberPassword(
-                        block.getAttribute('data-id') ?? '',
-                        password
-                    )
+                    if (this.storage() === localStorage) {
+                        this.setItemWithExpiry('show-content-password', password, 1000 * 60 * 60 * 24 * 3)
+                    } else {
+                        this.rememberPassword(
+                            block.getAttribute('data-id') ?? '',
+                            password
+                        )
+                    }
                 } else {
                     throw new Error('Password is incorrect')
                 }
@@ -125,10 +129,13 @@ class Decryptor {
             .catch((err) => {
                 snackbar.add(block.getAttribute('data-error-msg'))
                 // clear password if exists.
-                this.clearPassword(block.getAttribute('data-id') ?? '')
+                if (this.storage() === localStorage) {
+                    this.storage().removeItem('show-content-password');
+                } else {
+                    this.clearPassword(block.getAttribute('data-id') ?? '')
+                }
                 console.log(err)
             })
-
     }
 
     private storage(): Storage {
@@ -138,6 +145,33 @@ class Decryptor {
     private cacheKey(id: string): string {
         return `hugo-encrypt-password-${location.pathname}-${id}`
     }
+
+    private setItemWithExpiry(key: string, value: string, ttl: number) {
+        const now = new Date();
+        // ttl (time to live) 是以毫秒为单位的过期时间长度
+        const item = {
+            value: value,
+            expiry: now.getTime() + ttl,
+        };
+        localStorage.setItem(key, JSON.stringify(item));
+    }
+
+    private getItemWithExpiry(key: string) {
+        const itemStr = localStorage.getItem(key);
+        if (!itemStr) {
+            return null;
+        }
+        const item = JSON.parse(itemStr);
+        const now = new Date();
+        // 检查是否过期
+        if (now.getTime() > item.expiry) {
+            // 如果过期，删除该项并返回 null
+            localStorage.removeItem(key);
+            return null;
+        }
+        return item.value;
+    }
+
 
     private rememberPassword(id: string, password: string): void {
         this.storage().setItem(this.cacheKey(id), password)
@@ -155,6 +189,18 @@ class Decryptor {
         const pwd = this.storage().getItem(this.cacheKey(id))
         if (pwd !== null) {
             this.showBlock(block, pwd)
+        }
+    }
+
+    recoverGlobal(block: HTMLElement): void {
+        // Check if this.storage() is localStorage or sessionStorage
+        if (this.storage() === localStorage) {
+            const pwd = this.getItemWithExpiry('show-content-password')
+            if (pwd !== null) {
+                this.showBlock(block, pwd)
+            }
+        } else {
+            this.recover(block)
         }
     }
 
