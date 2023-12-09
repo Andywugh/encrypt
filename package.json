@@ -2,14 +2,14 @@
   "name": "hugo-mod-encrypt",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hugomods/encrypt.git"
+    "url": "git+https://github.com/Andywugh/encrypt.git"
   },
   "author": "Razon Yang <razonyang@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hugomods/encrypt/issues"
+    "url": "https://github.com/Andywugh/encrypt/issues"
   },
-  "homepage": "https://github.com/hugomods/encrypt",
+  "homepage": "https://github.com/Andywugh/encrypt",
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
     "prettier": "^3.0.0",

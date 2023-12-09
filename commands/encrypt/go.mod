@@ -1,4 +1,4 @@
-module github.com/hugomods/encrypt/commands/encrypt
+module github.com/Andywugh/encrypt/commands/encrypt
 
 go 1.19
 
